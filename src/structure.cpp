@@ -2,7 +2,9 @@
 #include "unit.h"
 
 Structure::Structure(Type type)
+    :type(type)
 {
+
     switch (type) {
     case Type::CASTLE:
     {
