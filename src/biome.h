@@ -17,6 +17,13 @@ public:
     Biome(BiomeName);
 private:
 
+
+
+
+
+
+
+
 };
 
 #endif // BIOME_H

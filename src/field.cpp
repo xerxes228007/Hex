@@ -1,11 +1,13 @@
 #include "field.h"
 #include <QDebug>
 
+#include "texture.h"
+
 Field::Field(int centerX, int centerY, int r, Biome b)
     :biome(b)
 {
 
-    image = QImage((".\\resources\\river.png"));
+    image = *Texture::getTexture("sand");
 
     for (int i = 0; i < 6; i++)
     {
