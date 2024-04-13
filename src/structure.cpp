@@ -19,13 +19,13 @@ Structure::Structure(Type type)
     case Type::SHOOTING_RANGE:
     {
         earning = 0;
-        availableUnits.set(static_cast<size_t>(Unit::Type::NONE));
+        availableUnits.set(static_cast<size_t>(Unit::Type::ARCHERS));
         break;
     }
     case Type::HORSE_STABLE:
     {
         earning = 0;
-        availableUnits.set(static_cast<size_t>(Unit::Type::NONE));
+        availableUnits.set(static_cast<size_t>(Unit::Type::CAVALRY));
         break;
     }
     default:
