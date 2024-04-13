@@ -7,12 +7,12 @@ class Unit
 {
 public:
 
-    enum class Type
+    enum class Type:uint8_t
     {
-        NONE,
-        INFANTRY,
-        ARCHERS,
-        CAVALRY
+        NONE = 0b000,
+        INFANTRY = 0b001,
+        ARCHERS = 0b010,
+        CAVALRY = 0b100
     };
 
     Unit(Type type);
