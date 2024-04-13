@@ -11,8 +11,7 @@ public:
         FOREST,
         DESERT,
         RIVER,
-
-            MOUNTAINS,
+        MOUNTAINS,
         BLANK
     };
     Biome(BiomeName);

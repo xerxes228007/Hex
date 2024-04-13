@@ -5,7 +5,7 @@ Field::Field(int centerX, int centerY, int r, Biome b)
     :biome(b)
 {
 
-    image = QImage((".\\resources\\forest.png"));
+    image = QImage((".\\resources\\river.png"));
 
     for (int i = 0; i < 6; i++)
     {
