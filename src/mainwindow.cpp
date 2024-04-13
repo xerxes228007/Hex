@@ -6,7 +6,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , hexagon(500, 500, 100)
 {
     ui->setupUi(this);
     generateMap();
@@ -59,7 +58,7 @@ void MainWindow::generateMap(){
         int offset = (i%2==0 ? 20 : 0);
         QVector<Field> row;
         for(int j = 0; j < 40; ++j){
-            row.push_back(Field(offset+30+j*40, 30 + i*35, 20));
+            row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::DESERT));
         }
         map.push_back(row);
     }

@@ -1,7 +1,9 @@
 #include "field.h"
 #include <QDebug>
 
-Field::Field(int centerX, int centerY, int r) {
+Field::Field(int centerX, int centerY, int r, Biome b)
+    :biome(b)
+{
 
     image = QImage((".\\resources\\sand.png"));
 
