@@ -5,17 +5,19 @@
 #include <filesystem>
 
 #include <QImage>
+#include <QDebug>
+#include <QString>
 
 class Texture
 {
 public:
 
-    static void Init();
-
+    static void init(std::string_view path);
+    inline static std::shared_ptr<QImage> getTexture(std::string_view texture) {return textures[QString(texture.data())];};
 
 private:
 
-    static std::unordered_map<std::filesystem::path, QImage> textures;
+    static std::unordered_map<QString, std::shared_ptr<QImage>> textures;
 
 
 };
