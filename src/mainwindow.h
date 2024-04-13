@@ -23,7 +23,6 @@ private:
     void mousePressEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     Ui::MainWindow *ui;
-    Field hexagon;
     QVector<QVector<Field>> map;
 };
 #endif // MAINWINDOW_H
