@@ -9,8 +9,6 @@ Field::Field(int centerX, int centerY, int r, Biome b)
 
     image = *Texture::getTexture("sand");
 
-    qDebug() << image;
-
     for (int i = 0; i < 6; i++)
     {
         float currentAngle = 60 * i;
