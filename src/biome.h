@@ -5,7 +5,16 @@
 class Biome
 {
 public:
-    enum class BiomeName{PLAIN, FOREST, DESERT, RIVER, BLANK};
+    enum class BiomeName
+    {
+        PLAIN,
+        FOREST,
+        DESERT,
+        RIVER,
+
+            MOUNTAINS,
+        BLANK
+    };
     Biome(BiomeName);
 private:
 
