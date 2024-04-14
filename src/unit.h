@@ -2,6 +2,7 @@
 #define UNIT_H
 
 #include <stdint.h>
+#include <QPolygonF>
 
 class Unit
 {
@@ -15,19 +16,20 @@ public:
         CAVALRY = 0b100
     };
 
-    Unit(Type type);
+    Unit(uint16_t, uint16_t, Type type);
 
     inline uint8_t getHealth() const {return health;};
     inline uint8_t getDamage() const {return damage;};
     inline uint8_t getProtection() const {return protection;};
     inline uint8_t getSpeed() const {return speed;};
     inline Type getType() const {return type;};
+    inline QPolygonF getPolygon() const {return Polygon;};
 
 
 private:
 
-    Type type = Type::NONE;
-
+    Type type;
+    QPolygonF Polygon;
     uint8_t health      = 0;
     uint8_t damage      = 0;
     uint8_t protection  = 0;

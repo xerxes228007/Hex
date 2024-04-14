@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "field.h"
+#include <QVector2D>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,8 +21,10 @@ public:
 
 private:
     void generateMap();
+    void moveUnit(int i1, int j1, int i2,int j2);
     void mousePressEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
+    QVector2D firstCkick{-1,-1};
     Ui::MainWindow *ui;
     QVector<QVector<Field>> map;
 };

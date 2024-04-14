@@ -1,6 +1,5 @@
 #include "texture.h"
 
-
 void Texture::init(std::string_view path)
 {
     for(const auto& i : std::filesystem::directory_iterator(path))
