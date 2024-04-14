@@ -17,8 +17,10 @@ public:
         HORSE_STABLE
     };
     Structure(Type type);
+    inline Type getType() const {return type;};
 
 private:
+    Type type = Type::NONE;
     uint8_t earning = 0;
     std::bitset<NUMBER_OF_UNITS> availableUnits;
 };

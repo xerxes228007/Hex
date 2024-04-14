@@ -5,6 +5,9 @@
 #include <QColor>
 #include <QPolygonF>
 #include "biome.h"
+#include "structure.h"
+#include "unit.h"
+
 
 class Field
 {
@@ -16,11 +19,18 @@ public:
     void setColor(QColor a){color = a;};
     QColor getColor(){return color;};
     QImage getTexture(){return image;};
-
+    inline bool isHereStructere()const{return hereStructure.getType()!=Structure::Type::NONE;};
+    inline bool isHereUnit()const{return hereUnit.getType()!=Unit::Type::NONE;};
+    void addStructure(Structure::Type type){hereStructure = Structure(type);};
+    void removeStructure(){hereStructure = Structure(Structure::Type::NONE);};
+    void addUnit(Unit::Type type){hereUnit = Unit(type);};
+    void removeUnit(){hereUnit = Unit(Unit::Type::NONE);};
 private:
     int x;
     int y;
     int r;
+    Structure hereStructure;
+    Unit hereUnit;
     QPolygonF hexagon;
     QImage image;
     Biome biome;

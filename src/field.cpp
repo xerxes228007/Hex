@@ -5,6 +5,8 @@
 
 Field::Field(int centerX, int centerY, int r, Biome b)
     :biome(b)
+    ,hereStructure(Structure::Type::NONE)
+    ,hereUnit(Unit::Type::NONE)
 {
 
     image = *Texture::getTexture("sand");
