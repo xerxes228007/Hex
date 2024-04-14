@@ -23,6 +23,17 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
         for(int j = 0; j<map[i].size(); ++j){
             if(map[i][j].isInside(mapFromGlobal(QCursor::pos()).x(), mapFromGlobal(QCursor::pos()).y())){
                 map[i][j].setColor(Qt::green);
+                if(map[i][j].isHereUnit()&&firstCkick.x()==-1 && firstCkick.y()==-1){
+                    firstCkick.setX(i);
+                    firstCkick.setY(j);
+
+                }
+                if(!map[i][j].isHereUnit()&&firstCkick.x()>=0 && firstCkick.y()>=0){
+                    moveUnit(firstCkick.x(), firstCkick.y(), i, j);
+                    firstCkick.setX(-1);
+                    firstCkick.setY(-1);
+                    map[i][j].setColor(Qt::black);
+                }
             }else{
                 map[i][j].setColor(Qt::black);
             }
@@ -49,8 +60,13 @@ void MainWindow::paintEvent(QPaintEvent *event){
             pen.setColor(map[i][j].getColor());
             painter.setPen(pen);
             painter.drawPolygon(map[i][j].getHexagon());
+            if(map[i][j].isHereUnit()){
+                painter.drawPolygon(map[i][j].getUnit().getPolygon());
+            }
         }
     }
+
+
 }
 
 void MainWindow::generateMap(){
@@ -62,4 +78,10 @@ void MainWindow::generateMap(){
         }
         map.push_back(row);
     }
+    map[10][20].addUnit(Unit::Type::INFANTRY);
+}
+
+void MainWindow::moveUnit(int i1, int j1, int i2,int j2){
+    map[i2][j2].addUnit(map[i1][j1].getUnit().getType());
+    map[i1][j1].removeUnit();
 }

@@ -6,7 +6,9 @@
 Field::Field(int centerX, int centerY, int r, Biome b)
     :biome(b)
     ,hereStructure(Structure::Type::NONE)
-    ,hereUnit(Unit::Type::NONE)
+    ,hereUnit(centerX, centerY,Unit::Type::NONE)
+    ,x(centerX)
+    ,y(centerY)
 {
 
     image = *Texture::getTexture("sand");
@@ -17,7 +19,6 @@ Field::Field(int centerX, int centerY, int r, Biome b)
         float x = r * sin(qDegreesToRadians(currentAngle));
         float y = r * cos(qDegreesToRadians(currentAngle));
         hexagon << QPointF(x+ centerX, y+ centerY);
-        coordinates.push_back(QVector2D(x + centerX, y + centerY));
     }
 }
 
