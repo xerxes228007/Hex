@@ -20,6 +20,7 @@ public:
     ~MainWindow();
 
 private:
+    const QVector2D NO_CLICK {-1, -1};
     void generateMap();
     void moveUnit(int i1, int j1, int i2,int j2);
     void mousePressEvent(QMouseEvent *event) override;
@@ -27,7 +28,7 @@ private:
     void paintEvent(QPaintEvent *event) override;
     QPolygonF scalePolygon(QPolygonF);
     QPolygonF scaleOtherPolygon(QPolygonF);
-    QVector2D firstCkick{-1,-1};
+    QVector2D firstClick{-1,-1};
     double scale = 1;
     double mas = 1;
     QVector<QVector2D> scaleCoordinates;
@@ -37,6 +38,5 @@ private:
     QVector<QPolygonF> otherPolygons;
     void fieldsToPolygons();
     void otherToPolygons();
-    void scaleOther();
 };
 #endif // MAINWINDOW_H

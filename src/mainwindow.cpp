@@ -4,6 +4,8 @@
 #include "field.h"
 #include <QWheelEvent>
 
+#define SCALE_FACTOR 1.1
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -24,9 +26,9 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 
     if (delta > 0 && mas < 3)
     {
-        mas *= 1.1;
-        scale = 1.10;
-        scaleCoordinates.push_back(QVector2D(QCursor::pos().x(), QCursor::pos().y()));
+        mas *= SCALE_FACTOR;
+        scale = SCALE_FACTOR;
+        scaleCoordinates.push_back(QVector2D(mapFromGlobal(QCursor::pos()).x(), mapFromGlobal(QCursor::pos()).y()));
         fieldsToPolygons();
         otherToPolygons();
         QWidget::repaint();
@@ -34,8 +36,8 @@ void MainWindow::wheelEvent(QWheelEvent *event)
     }
     else if (delta < 0 && mas > 1)
     {
-        mas /= 1.1;
-        scale = 1/1.1;
+        mas /= SCALE_FACTOR;
+        scale = 1/SCALE_FACTOR;
         fieldsToPolygons();
         scaleCoordinates.pop_back();
         otherToPolygons();
@@ -52,15 +54,14 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
         for(int j = 0; j<map[i].size(); ++j){
             if(mapPolygons[i][j].containsPoint(QPointF(mapFromGlobal(QCursor::pos()).x(), mapFromGlobal(QCursor::pos()).y()),Qt::FillRule::OddEvenFill)){
                 map[i][j].setColor(Qt::green);
-                if(map[i][j].isHereUnit()&&firstCkick.x()==-1 && firstCkick.y()==-1){
-                    firstCkick.setX(i);
-                    firstCkick.setY(j);
+                if(map[i][j].isHereUnit()&&firstClick == NO_CLICK){
+                    firstClick.setX(i);
+                    firstClick.setY(j);
 
                 }
-                if(!map[i][j].isHereUnit()&&firstCkick.x()>=0 && firstCkick.y()>=0){
-                    moveUnit(firstCkick.x(), firstCkick.y(), i, j);
-                    firstCkick.setX(-1);
-                    firstCkick.setY(-1);
+                if(!map[i][j].isHereUnit()&&firstClick!= NO_CLICK){
+                    moveUnit(firstClick.x(), firstClick.y(), i, j);
+                    firstClick = NO_CLICK;
                     map[i][j].setColor(Qt::black);
                 }
             }else{
@@ -104,8 +105,8 @@ QPolygonF MainWindow::scaleOtherPolygon(QPolygonF polygon){
         }
 
         for(int i = 0; i<polygon.size(); ++i){
-            polygon[i].setX(polygon[i].x()*1.1);
-            polygon[i].setY(polygon[i].y()*1.1);
+            polygon[i].setX(polygon[i].x()*SCALE_FACTOR);
+            polygon[i].setY(polygon[i].y()*SCALE_FACTOR);
         }
         for(int i = 0; i<polygon.size(); ++i){
             polygon[i].setX(polygon[i].x()+scaleCoordinates[j].x());
@@ -160,7 +161,7 @@ void MainWindow::otherToPolygons(){
     for(int i = 0; i<map.size(); ++i){
         for(int j = 0; j<map[i].size(); ++j){
             if(map[i][j].isHereStructere()){
-                //otherPolygons.push_back(scalePolygon(map[i][j].getStructure().getPolygon()));
+                // ODO: otherPolygons.push_back(scalePolygon(map[i][j].getStructure().getPolygon()));
             }
             if(map[i][j].isHereUnit()){
                 otherPolygons.push_back(scaleOtherPolygon(map[i][j].getUnit().getPolygon()));
@@ -168,12 +169,6 @@ void MainWindow::otherToPolygons(){
         }
     }
 }
-
-//void MainWindow::scaleOther(){
-  //  for(int i = 0; i<otherPolygons.size(); ++i){
-    //    otherPolygons[i] = scalePolygon(otherPolygons[i]);
-    //}
-//}
 
 void MainWindow::generateMap(){
     for(int i = 0; i < 20; i++){
