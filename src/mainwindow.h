@@ -23,9 +23,20 @@ private:
     void generateMap();
     void moveUnit(int i1, int j1, int i2,int j2);
     void mousePressEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
+    QPolygonF scalePolygon(QPolygonF);
+    QPolygonF scaleOtherPolygon(QPolygonF);
     QVector2D firstCkick{-1,-1};
+    double scale = 1;
+    double mas = 1;
+    QVector<QVector2D> scaleCoordinates;
     Ui::MainWindow *ui;
     QVector<QVector<Field>> map;
+    QVector<QVector<QPolygonF>> mapPolygons;
+    QVector<QPolygonF> otherPolygons;
+    void fieldsToPolygons();
+    void otherToPolygons();
+    void scaleOther();
 };
 #endif // MAINWINDOW_H
