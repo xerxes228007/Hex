@@ -20,12 +20,23 @@ public:
     ~MainWindow();
 
 private:
+    const QVector2D NO_CLICK {-1, -1};
     void generateMap();
     void moveUnit(int i1, int j1, int i2,int j2);
     void mousePressEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
-    QVector2D firstCkick{-1,-1};
+    QPolygonF scalePolygon(QPolygonF);
+    QPolygonF scaleOtherPolygon(QPolygonF);
+    QVector2D firstClick{-1,-1};
+    double scale = 1;
+    double mas = 1;
+    QVector<QVector2D> scaleCoordinates;
     Ui::MainWindow *ui;
     QVector<QVector<Field>> map;
+    QVector<QVector<QPolygonF>> mapPolygons;
+    QVector<QPolygonF> otherPolygons;
+    void fieldsToPolygons();
+    void otherToPolygons();
 };
 #endif // MAINWINDOW_H
