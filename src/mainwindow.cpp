@@ -50,27 +50,47 @@ void MainWindow::wheelEvent(QWheelEvent *event)
 
 void MainWindow::mousePressEvent(QMouseEvent *event){
 
+    wasClickedOnTheMap = false;
     for(int i = 0; i<map.size(); ++i){
         for(int j = 0; j<map[i].size(); ++j){
+            map[i][j].setColor(Qt::lightGray);
             if(mapPolygons[i][j].containsPoint(QPointF(mapFromGlobal(QCursor::pos()).x(), mapFromGlobal(QCursor::pos()).y()),Qt::FillRule::OddEvenFill)){
                 map[i][j].setColor(Qt::green);
+                wasClickedOnTheMap = true;
                 if(map[i][j].isHereUnit()&&firstClick == NO_CLICK){
                     firstClick.setX(i);
                     firstClick.setY(j);
+                    refreshAvailiableFields(QVector2D(i, j));
 
                 }
-                if(!map[i][j].isHereUnit()&&firstClick!= NO_CLICK){
+                else if((!map[i][j].isHereUnit())
+                    &&(firstClick != NO_CLICK)
+                    &&availiableFields.contains(QVector2D(i,j)))
+                {
                     moveUnit(firstClick.x(), firstClick.y(), i, j);
                     firstClick = NO_CLICK;
-                    map[i][j].setColor(Qt::black);
+                    map[i][j].setColor(Qt::lightGray);
+                    availiableFields.clear();
                 }
-            }else{
-                map[i][j].setColor(Qt::black);
+                else if(firstClick != NO_CLICK)
+                {
+                    firstClick=NO_CLICK;
+                    availiableFields.clear();
+                    map[i][j].setColor(Qt::lightGray);
+                }
             }
         }
     }
 
+    if(!wasClickedOnTheMap)
+    {
+        firstClick = NO_CLICK;
+        availiableFields.clear();
+    }
 
+    for (const auto i:availiableFields){
+        map[i.x()][i.y()].setColor(Qt::black);
+    }
 
     QMainWindow::repaint();
 }
@@ -192,8 +212,29 @@ void MainWindow::generateMap(){
     otherToPolygons();
 }
 
+void MainWindow::refreshAvailiableFields(QVector2D field){
+    availiableFields.clear();
+    if(static_cast<int>(field.x()) % 2==0){
+        availiableFields.push_back(QVector2D(field.x()-1, field.y()));
+        availiableFields.push_back(QVector2D(field.x()-1, field.y()+1));
+        availiableFields.push_back(QVector2D(field.x(), field.y()-1));
+        availiableFields.push_back(QVector2D(field.x(), field.y()+1));
+        availiableFields.push_back(QVector2D(field.x()+1, field.y()));
+        availiableFields.push_back(QVector2D(field.x()+1, field.y()+1));
+    }
+    else{
+        availiableFields.push_back(QVector2D(field.x()-1, field.y()-1));
+        availiableFields.push_back(QVector2D(field.x()-1, field.y()));
+        availiableFields.push_back(QVector2D(field.x(), field.y()-1));
+        availiableFields.push_back(QVector2D(field.x(), field.y()+1));
+        availiableFields.push_back(QVector2D(field.x()+1, field.y()-1));
+        availiableFields.push_back(QVector2D(field.x()+1, field.y()));
+    }
+}
+
 void MainWindow::moveUnit(int i1, int j1, int i2,int j2){
     map[i2][j2].addUnit(map[i1][j1].getUnit().getType());
     map[i1][j1].removeUnit();
     otherToPolygons();
 }
+

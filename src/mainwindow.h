@@ -28,7 +28,11 @@ private:
     void paintEvent(QPaintEvent *event) override;
     QPolygonF scalePolygon(QPolygonF);
     QPolygonF scaleOtherPolygon(QPolygonF);
+    void refreshAvailiableFields(QVector2D);
+    QVector<QVector2D> availiableFields;
+    bool wasClickedOnTheMap = 0;
     QVector2D firstClick{-1,-1};
+    QVector2D selectedFieldIndex{-1, -1};
     double scale = 1;
     double mas = 1;
     QVector<QVector2D> scaleCoordinates;

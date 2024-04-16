@@ -34,7 +34,7 @@ private:
     QPolygonF hexagon;
     QImage image;
     Biome biome;
-    QColor color = Qt::black;
+    QColor color = Qt::lightGray;
 };
 
 #endif // FIELD_H
