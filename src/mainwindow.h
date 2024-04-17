@@ -24,14 +24,19 @@ private:
     void generateMap();
     void moveUnit(int i1, int j1, int i2,int j2);
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     QPolygonF scalePolygon(QPolygonF);
     QPolygonF scaleOtherPolygon(QPolygonF);
     void refreshAvailiableFields(QVector2D);
+    void moveMap(int dx, int dy);
     QVector<QVector2D> availiableFields;
     bool wasClickedOnTheMap = 0;
+    bool isMovingMap = 0;
     QVector2D firstClick{-1,-1};
+    QVector2D lastMoveCordinate{-1, -1};
     QVector2D selectedFieldIndex{-1, -1};
     double scale = 1;
     double mas = 1;
@@ -41,6 +46,8 @@ private:
     QVector<QVector<QPolygonF>> mapPolygons;
     QVector<QPolygonF> otherPolygons;
     void fieldsToPolygons();
+    void refreshUnits();
     void otherToPolygons();
+    QPolygonF getUnitInMap(int i, int j);
 };
 #endif // MAINWINDOW_H
