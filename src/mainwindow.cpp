@@ -3,8 +3,13 @@
 #include <QPainter>
 #include "field.h"
 #include <QWheelEvent>
+#include "texture.h"
+#include <QPixmap>
+#include <QPainterPath>
 
 #define SCALE_FACTOR 1.1
+#define SIZE_MAP_X 40
+#define SIZE_MAP_Y 20
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -188,24 +193,28 @@ void MainWindow::paintEvent(QPaintEvent *event){
     QBrush brush;
     QPen pen;
 
-    pen.setWidth(2);
+    pen.setWidth(4);
     for(int i = 0; i<map.size(); ++i){
         for(int j = 0 ; j<map[i].size(); ++j){
 
-            brush.setTextureImage(map[i][j].getTexture());
+            QPixmap pixmap = QPixmap::fromImage(*Texture::getTexture(map[i][j].getName()));
             pen.setColor(map[i][j].getColor());
             painter.setPen(pen);
-            QTransform textureTransform;
-            textureTransform.scale(mas, mas);
-            brush.setTransform(textureTransform);
-            painter.setBrush(brush);
+            QPainterPath path;
+            path.addPolygon(mapPolygons[i][j]);
+            painter.setClipPath(path);
+            painter.drawPixmap(mapPolygons[i][j].boundingRect().toRect() , pixmap);
             painter.drawPolygon(mapPolygons[i][j]);
 
         }
     }
 
     for(int i = 0; i<otherPolygons.size(); ++i){
-
+        QPixmap pixmap = QPixmap::fromImage(*Texture::getTexture(namesOfOther[i]));
+        QPainterPath path;
+        path.addPolygon(otherPolygons[i]);
+        painter.setClipPath(path);
+        painter.drawPixmap(otherPolygons[i].boundingRect().toRect() , pixmap);
         painter.drawPolygon(otherPolygons[i]);
     }
 
@@ -222,7 +231,6 @@ void MainWindow::fieldsToPolygons(){
 
 QPolygonF MainWindow::getUnitInMap(int i, int j){
     QPolygonF polygon = map[i][j].getUnit().getPolygon();
-    //otherPolygons[i][j];
     for(int j = 0; j< scaleCoordinates.size(); ++j){
         for(int k = 0; k<polygon.size(); ++k){
             polygon[k].setX(polygon[k].x()-scaleCoordinates[j].x());
@@ -287,6 +295,7 @@ void MainWindow::generateMap(){
             }
             if(map[i][j].isHereUnit()){
                 otherPolygons.push_back(map[i][j].getUnit().getPolygon());
+                namesOfOther.push_back(map[i][j].getUnit().getName());
 
             }
         }
@@ -298,6 +307,7 @@ void MainWindow::generateMap(){
 
 void MainWindow::refreshUnits(){
     otherPolygons.clear();
+    namesOfOther.clear();
 
     // TODO: for structions
     for(int i = 0; i <map.size(); ++i){
@@ -310,6 +320,7 @@ void MainWindow::refreshUnits(){
             if(map[i][j].isHereUnit()){
 
                 otherPolygons.push_back(getUnitInMap(i, j));
+                namesOfOther.push_back(map[i][j].getUnit().getName());
             }
 
         }
@@ -338,6 +349,13 @@ void MainWindow::refreshAvailiableFields(QVector2D field){
         availiableFields.push_back(QVector2D(field.x()+1, field.y()-1));
         availiableFields.push_back(QVector2D(field.x()+1, field.y()));
     }
+
+    for(int i = availiableFields.size()-1; i>=0; --i){
+
+        if(availiableFields[i].x()>SIZE_MAP_Y-1 || availiableFields[i].x()<0||availiableFields[i].y()>SIZE_MAP_X-1||availiableFields[i].y()<0) availiableFields.remove(i);
+
+    }
+    qDebug()<<availiableFields.size();
 }
 
 void MainWindow::moveUnit(int i1, int j1, int i2,int j2){

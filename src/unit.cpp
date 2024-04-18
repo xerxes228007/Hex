@@ -10,9 +10,6 @@ Unit::Unit(uint16_t centerX, uint16_t centerY,Type type)
 
     if(type!=Type::NONE)
     {
-        qDebug()<<centerX;
-        qDebug()<<centerY;
-
         for (int i = 0; i < 4; i++)
         {
             float currentAngle = 90 * i;
@@ -27,6 +24,7 @@ Unit::Unit(uint16_t centerX, uint16_t centerY,Type type)
     {
         case Type::INFANTRY:
         {
+            name = "infantry";
             health = 3;
             speed = 1;
             damage = 1;
@@ -35,6 +33,7 @@ Unit::Unit(uint16_t centerX, uint16_t centerY,Type type)
         }
         case Type::ARCHERS:
         {
+            name = "archers";
             health = 1;
             speed = 1;
             damage = 3;
@@ -43,6 +42,7 @@ Unit::Unit(uint16_t centerX, uint16_t centerY,Type type)
         }
         case Type::CAVALRY:
         {
+            name = "cavalry";
             health = 2;
             speed = 2;
             damage = 2;
