@@ -1,7 +1,4 @@
 #include "field.h"
-#include <QDebug>
-
-#include "texture.h"
 
 Field::Field(int centerX, int centerY, int r, Biome b)
     :biome(b)
@@ -10,8 +7,8 @@ Field::Field(int centerX, int centerY, int r, Biome b)
     ,x(centerX)
     ,y(centerY)
 {
+    name = "mountain";
 
-    image = *Texture::getTexture("sand");
 
     for (int i = 0; i < 6; i++)
     {

@@ -33,6 +33,7 @@ private:
     void refreshAvailiableFields(QVector2D);
     void moveMap(int dx, int dy);
     QVector<QVector2D> availiableFields;
+    QVector<std::string_view> namesOfOther;
     bool wasClickedOnTheMap = 0;
     bool isMovingMap = 0;
     QVector2D firstClick{-1,-1};

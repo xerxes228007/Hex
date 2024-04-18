@@ -24,10 +24,11 @@ public:
     inline uint8_t getSpeed() const {return speed;};
     inline Type getType() const {return type;};
     inline QPolygonF getPolygon() const {return Polygon;};
+    inline std::string_view getName() const{return name;};
 
 
 private:
-
+    std::string_view name = "";
     Type type;
     QPolygonF Polygon;
     uint8_t health      = 0;

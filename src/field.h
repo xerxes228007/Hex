@@ -16,7 +16,6 @@ public:
     bool isInside(int x, int y);
     void setColor(QColor a){color = a;};
     QColor getColor(){return color;};
-    QImage getTexture(){return image;};
     inline bool isHereStructere()const{return hereStructure.getType()!=Structure::Type::NONE;};
     inline bool isHereUnit()const{return hereUnit.getType()!=Unit::Type::NONE;};
     void addStructure(Structure::Type type){hereStructure = Structure(type);};
@@ -25,10 +24,12 @@ public:
     void removeUnit(){hereUnit = Unit(x, y, Unit::Type::NONE);};
     inline Unit getUnit() const {return hereUnit;};
     inline Structure getStructure() const {return hereStructure;};
+    inline std::string_view getName()const {return name;};
 private:
     int x;
     int y;
     int r;
+    std::string_view name = "";
     Structure hereStructure;
     Unit hereUnit;
     QPolygonF hexagon;
