@@ -50,5 +50,9 @@ private:
     void refreshUnits();
     void otherToPolygons();
     QPolygonF getUnitInMap(int i, int j);
+    std::vector<int> permutation;
+    double perlin(double x, double y);
+    double grad(int hash, double x, double y);
+    double lerp(double t, double a, double b);
 };
 #endif // MAINWINDOW_H
