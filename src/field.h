@@ -24,7 +24,7 @@ public:
     void removeUnit(){hereUnit = Unit(x, y, Unit::Type::NONE);};
     inline Unit getUnit() const {return hereUnit;};
     inline Structure getStructure() const {return hereStructure;};
-    inline std::string_view getName()const {return name;};
+    inline std::string_view getName()const {return biome.getName();};
 private:
     int x;
     int y;

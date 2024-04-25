@@ -7,9 +7,6 @@ Field::Field(int centerX, int centerY, int r, Biome b)
     ,x(centerX)
     ,y(centerY)
 {
-    name = "mountain";
-
-
     for (int i = 0; i < 6; i++)
     {
         float currentAngle = 60 * i;

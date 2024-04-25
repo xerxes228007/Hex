@@ -15,8 +15,9 @@ public:
         BLANK
     };
     Biome(BiomeName);
+    inline std::string_view getName() const {return name;};
 private:
-
+    std::string_view name = "";
 
 
 

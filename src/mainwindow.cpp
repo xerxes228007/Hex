@@ -6,10 +6,11 @@
 #include "texture.h"
 #include <QPixmap>
 #include <QPainterPath>
+#include <random>
 
 #define SCALE_FACTOR 1.1
-#define SIZE_MAP_X 40
-#define SIZE_MAP_Y 20
+#define SIZE_MAP_X 60
+#define SIZE_MAP_Y 30
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -265,25 +266,89 @@ void MainWindow::otherToPolygons(){
     for(int i = 0; i<otherPolygons.size(); ++i){
         otherPolygons[i] = scalePolygon(otherPolygons[i]);
     }
+}
 
-        // if(map[i][j].isHereStructere()){
-        //     // TODO: otherPolygons.push_back(scalePolygon(map[i][j].getStructure().getPolygon()));
-        // }
-        // if(map[i][j].isHereUnit()){
+double MainWindow::lerp(double t, double a, double b)
+{
+    return a + t * (b - a);
+}
 
-        //  }
+double MainWindow::grad(int hash, double x, double y)
+{
+    int h = hash & 15;
+    double u = h < 8 ? x : y;
+    double v = h < 4 ? y : h == 12 || h == 14 ? x : 0;
+    return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
+}
 
+double MainWindow::perlin(double x, double y)
+{
+
+
+
+    int X = static_cast<int>(x) & 255;
+    int Y = static_cast<int>(y) & 255;
+
+    double xf = x - static_cast<int>(x);
+    double yf = y - static_cast<int>(y);
+
+    double u = xf * xf * xf * (xf * (xf * 6 - 15) + 10);
+    double v = yf * yf * yf * (yf * (yf * 6 - 15) + 10);
+
+    int A = permutation[X] + Y;
+    int AA = permutation[A];
+    int AB = permutation[A + 1];
+    int B = permutation[X + 1] + Y;
+    int BA = permutation[B];
+    int BB = permutation[B + 1];
+
+    return lerp(v, lerp(u, grad(AA, xf, yf),
+                        grad(BA, xf - 1, yf)),
+                lerp(u, grad(AB, xf, yf - 1),
+                     grad(BB, xf - 1, yf - 1)));
 }
 
 void MainWindow::generateMap(){
-    for(int i = 0; i < 20; i++){
+
+    for (int i = 0; i < 256; i++)
+    {
+        permutation.push_back(i);
+    }
+    std::random_device rd;
+    std::mt19937 rng(rd());
+    int a = 0;
+    for(int i = 0; i < SIZE_MAP_Y; i++){
         int offset = (i%2==0 ? 20 : 0);
         QVector<Field> row;
-        for(int j = 0; j < 40; ++j){
-            row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::DESERT));
+        for(int j = 0; j < SIZE_MAP_X; ++j){
+            int p = static_cast<int>(perlin(j / 10.0, i / 10.0) * 10);
+            a++;
+            if(p < -3)
+            {
+                row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::RIVER));
+            }
+            else if(p<-2){
+                row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::DESERT));
+            }
+            else if(p<1)
+            {
+                row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::PLAIN));
+            }
+            else if(p<4)
+            {
+                row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::FOREST));
+            }
+            else
+            {
+                row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::MOUNTAINS));
+            }
         }
         map.push_back(row);
     }
+    qDebug()<<a;
+
+    permutation.clear();
+
     map[10][20].addUnit(Unit::Type::INFANTRY);
 
     for(int i = 0; i<map.size(); ++i){
