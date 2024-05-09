@@ -2,6 +2,7 @@
 #define STRUCTURE_H
 #include <stdint.h>
 #include <bitset>
+#include <QString>
 
 constexpr static auto NUMBER_OF_UNITS = 3;
 
@@ -18,8 +19,10 @@ public:
     };
     Structure(Type type);
     inline Type getType() const {return type;};
+    inline QString genName() const {return name;};
 
 private:
+    QString name = "";
     Type type = Type::NONE;
     uint8_t earning = 0;
     std::bitset<NUMBER_OF_UNITS> availableUnits;

@@ -5,7 +5,7 @@
 #include "biome.h"
 #include "structure.h"
 #include "unit.h"
-#include <qDebug>
+#include <QDebug>
 
 
 class Field
@@ -24,12 +24,12 @@ public:
     void removeUnit(){hereUnit = Unit(x, y, Unit::Type::NONE);};
     inline Unit getUnit() const {return hereUnit;};
     inline Structure getStructure() const {return hereStructure;};
-    inline std::string_view getName()const {return biome.getName();};
+    inline QString getName()const {return biome.getName();};
 private:
     int x;
     int y;
     int r;
-    std::string_view name = "";
+    QString name = "";
     Structure hereStructure;
     Unit hereUnit;
     QPolygonF hexagon;
