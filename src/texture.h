@@ -13,7 +13,7 @@ class Texture
 public:
 
     static void init(std::string_view path);
-    inline static std::shared_ptr<QImage> getTexture(std::string_view texture) {return textures[QString(texture.data())];};
+    inline static std::shared_ptr<QImage> getTexture(QString texture) {return textures[QString(texture.data())];};
 
 private:
 

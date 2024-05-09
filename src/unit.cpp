@@ -33,7 +33,7 @@ Unit::Unit(uint16_t centerX, uint16_t centerY,Type type)
         }
         case Type::ARCHERS:
         {
-            name = "archers";
+            name = "arche";
             health = 1;
             speed = 1;
             damage = 3;

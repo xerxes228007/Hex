@@ -6,7 +6,7 @@
 #include "texture.h"
 #include <QPixmap>
 #include <QPainterPath>
-#include <random>
+#include <QRandomGenerator>
 
 #define SCALE_FACTOR 1.1
 #define SIZE_MAP_X 60
@@ -198,7 +198,7 @@ void MainWindow::paintEvent(QPaintEvent *event){
     for(int i = 0; i<map.size(); ++i){
         for(int j = 0 ; j<map[i].size(); ++j){
 
-            QPixmap pixmap = QPixmap::fromImage(*Texture::getTexture(map[i][j].getName()));
+            QPixmap pixmap = QPixmap::fromImage(*Texture::getTexture(map[i][j].getName().append(map[i][j].getStructure().genName())));
             pen.setColor(map[i][j].getColor());
             painter.setPen(pen);
             QPainterPath path;
@@ -248,16 +248,13 @@ QPolygonF MainWindow::getUnitInMap(int i, int j){
         }
     }
 
-    if(map[i][j].getUnit().getType() == Unit::Type::INFANTRY){
-        polygon[2].setX(polygon[2].x()+ mapPolygons[i][j][0].x() - polygon[0].x());
-        polygon[2].setY(polygon[2].y()+ mapPolygons[i][j][0].y() - polygon[0].y());
-        polygon[1].setX(polygon[1].x()+ mapPolygons[i][j][0].x() - polygon[0].x());
-        polygon[1].setY(polygon[1].y()+ mapPolygons[i][j][0].y() - polygon[0].y());
-        polygon[3].setX(polygon[3].x()+ mapPolygons[i][j][0].x() - polygon[0].x());
-        polygon[3].setY(polygon[3].y()+ mapPolygons[i][j][0].y() - polygon[0].y());
-        polygon[0].setX(mapPolygons[i][j][0].x());
-        polygon[0].setY(mapPolygons[i][j][0].y());
+    for(int k = 1; i<polygon.size(); ++i){
+        polygon[k].setX(polygon[k].x()+ mapPolygons[i][j][0].x() - polygon[0].x());
+        polygon[k].setY(polygon[k].y()+ mapPolygons[i][j][0].y() - polygon[0].y());
     }
+    polygon[0].setX(mapPolygons[i][j][0].x());
+    polygon[0].setY(mapPolygons[i][j][0].y());
+
     return polygon;
 }
 
@@ -310,12 +307,17 @@ double MainWindow::perlin(double x, double y)
 
 void MainWindow::generateMap(){
 
-    for (int i = 0; i < 256; i++)
-    {
-        permutation.push_back(i);
+    for(int i =0; i<256; ++i){
+        int a = QRandomGenerator::global()->bounded(0, 256);
+        while (std::find(permutation.begin(),permutation.end(), a) != permutation.end()) {
+            a = QRandomGenerator::global()->bounded(1, 256);
+        }
+        permutation.push_back(a);
     }
-    std::random_device rd;
-    std::mt19937 rng(rd());
+
+    //std::random_shuffle(permutation.begin(), permutation.end());
+    //std::random_device rd;
+    //std::mt19937 rng(rd());
     int a = 0;
     for(int i = 0; i < SIZE_MAP_Y; i++){
         int offset = (i%2==0 ? 20 : 0);
@@ -327,7 +329,8 @@ void MainWindow::generateMap(){
             {
                 row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::RIVER));
             }
-            else if(p<-2){
+            else if(p<-2)
+            {
                 row.push_back(Field(offset+30+j*40, 30 + i*35, 20, Biome::BiomeName::DESERT));
             }
             else if(p<1)
@@ -420,7 +423,6 @@ void MainWindow::refreshAvailiableFields(QVector2D field){
         if(availiableFields[i].x()>SIZE_MAP_Y-1 || availiableFields[i].x()<0||availiableFields[i].y()>SIZE_MAP_X-1||availiableFields[i].y()<0) availiableFields.remove(i);
 
     }
-    qDebug()<<availiableFields.size();
 }
 
 void MainWindow::moveUnit(int i1, int j1, int i2,int j2){

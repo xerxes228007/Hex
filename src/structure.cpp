@@ -10,18 +10,21 @@ Structure::Structure(Type type)
     {
         earning = 3;
         availableUnits.set(static_cast<size_t>(Unit::Type::INFANTRY));
+        name = "castle";
         break;
     }
     case Type::GOLD_MINE:
     {
         earning = 5;
         availableUnits.set(static_cast<size_t>(Unit::Type::NONE));
+        name = "goldmine";
         break;
     }
     case Type::SHOOTING_RANGE:
     {
         earning = 0;
         availableUnits.set(static_cast<size_t>(Unit::Type::ARCHERS));
+        name = "shootingrange";
         break;
     }
     case Type::HORSE_STABLE:
@@ -29,6 +32,7 @@ Structure::Structure(Type type)
         earning = 0;
         availableUnits.set(static_cast<size_t>(Unit::Type::CAVALRY));
         break;
+        name = "horsestable";
     }
     default:
     {
