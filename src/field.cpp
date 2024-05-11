@@ -1,6 +1,7 @@
 #include "field.h"
+#include "structure.h"
 
-Field::Field(int centerX, int centerY, int r, Biome b)
+Field::Field(int centerX, int centerY, int r, Biome::BiomeName b)
     :biome(b)
     ,hereStructure(Structure::Type::NONE)
     ,hereUnit(centerX, centerY,Unit::Type::NONE)

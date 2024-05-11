@@ -5,19 +5,21 @@
 class Biome
 {
 public:
-    enum class BiomeName
+    enum BiomeName : int
     {
-        PLAIN,
-        FOREST,
-        DESERT,
-        RIVER,
-        MOUNTAINS,
-        BLANK
+        PLAIN       = 0,
+        FOREST      = 1,
+        DESERT      = 2,
+        RIVER       = 3,
+        MOUNTAINS   = 4,
+        BLANK       = 5
     };
     Biome(BiomeName);
     inline QString getName() const {return name;};
+    inline BiomeName getBiome() const {return biome;};
 private:
     QString name = "";
+    BiomeName biome;
 
 
 

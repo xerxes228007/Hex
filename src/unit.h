@@ -8,7 +8,7 @@ class Unit
 {
 public:
 
-    enum class Type:uint8_t
+    enum Type : uint8_t
     {
         NONE = 0b000,
         INFANTRY = 0b001,

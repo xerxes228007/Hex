@@ -10,12 +10,13 @@ class Structure
 {
 public:
 
-    enum class Type{
-        NONE,
-        CASTLE,
-        GOLD_MINE,
-        SHOOTING_RANGE,
-        HORSE_STABLE
+    enum Type : int
+    {
+        NONE            = 0x00,
+        CASTLE          = 0x01,
+        GOLD_MINE       = 0x02,
+        SHOOTING_RANGE  = 0x03,
+        HORSE_STABLE    = 0x04
     };
     Structure(Type type);
     inline Type getType() const {return type;};
