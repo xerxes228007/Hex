@@ -101,7 +101,9 @@ void Server::SendSlot(const QByteArray &arr)
     qDebug()<<"sending packages...";
     Data = arr;
     qDebug()<<Data;
-    socket->write(Data);
+    foreach (auto soc, Sockets) {
+        soc->write(Data);
+    }
 }
 
 
