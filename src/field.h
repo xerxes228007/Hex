@@ -1,5 +1,6 @@
 #ifndef FIELD_H
 #define FIELD_H
+
 #include <QColor>
 #include <QPolygonF>
 #include "biome.h"
@@ -11,7 +12,7 @@
 class Field
 {
 public:
-    Field(int, int, int, Biome);
+    Field(int, int, int, Biome::BiomeName);
     QPolygonF getHexagon(){return hexagon;};
     bool isInside(int x, int y);
     void setColor(QColor a){color = a;};
@@ -25,6 +26,7 @@ public:
     inline Unit getUnit() const {return hereUnit;};
     inline Structure getStructure() const {return hereStructure;};
     inline QString getName()const {return biome.getName();};
+    inline Biome::BiomeName getBiome()const {return biome.getBiome();};
 private:
     int x;
     int y;
